@@ -53,7 +53,7 @@ public class CategoryServiceTest {
         fruits.setId(ID);
         fruits.setName(NAME);
 
-        when(categoryRepository.findByLastName(anyString())).thenReturn(fruits);
+        when(categoryRepository.findByName(anyString())).thenReturn(fruits);
 
         //when
         CategoryDTO fruitsDto = categoryService.getCategoryByName(NAME);

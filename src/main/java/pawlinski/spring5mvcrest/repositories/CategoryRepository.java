@@ -5,5 +5,5 @@ import pawlinski.spring5mvcrest.domain.Category;
 
 public interface CategoryRepository extends JpaRepository<Category, Long> {
 
-    Category findByLastName(String categoryName);
+    Category findByName(String categoryName);
 }

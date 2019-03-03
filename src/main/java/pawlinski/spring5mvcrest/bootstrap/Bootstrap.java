@@ -6,7 +6,7 @@ import pawlinski.spring5mvcrest.domain.Category;
 import pawlinski.spring5mvcrest.repositories.CategoryRepository;
 
 @Component
-public class Bootstrap implements CommandLineRunner { //cml - springBoot specific class, loads app code on startup
+public class Bootstrap implements CommandLineRunner { 
 
     private CategoryRepository categoryRepository;
 
