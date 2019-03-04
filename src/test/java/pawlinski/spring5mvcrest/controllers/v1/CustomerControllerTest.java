@@ -20,10 +20,11 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-public class CustomerControllerTest {
+public class CustomerControllerTest extends AbstractRestController {
 
     public static final String FIRST_NAME = "John";
     public static final String LAST_NAME = "Smith";
@@ -79,4 +80,25 @@ public class CustomerControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.firstName", equalTo(FIRST_NAME)));
     }
+
+    @Test
+    public void createNewCustomer() throws Exception {
+        CustomerDTO customerDTO = new CustomerDTO();
+        customerDTO.setFirstName("Robert");
+        customerDTO.setLastName("Plant");
+
+        CustomerDTO returnedDto = new CustomerDTO();
+        returnedDto.setFirstName(customerDTO.getFirstName());
+        returnedDto.setLastName(customerDTO.getLastName());
+        returnedDto.setCustomerUrl("/api/v1/customer/2");
+
+        when(customerService.createNewCustomer(customerDTO)).thenReturn(returnedDto);
+
+        mockMvc.perform(post("/api/v1/customers/").contentType(MediaType.APPLICATION_JSON).content(asJsonString(customerDTO)))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.firstName", equalTo("Robert")))
+                .andExpect(jsonPath("$.lastName", equalTo("Plant")))
+                .andExpect(jsonPath("$.customerUrl", equalTo("/api/v1/customer/2")));
+    }
+
 }
