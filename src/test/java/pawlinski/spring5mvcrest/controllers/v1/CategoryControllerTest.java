@@ -50,7 +50,7 @@ public class CategoryControllerTest {
 
         when(categoryService.getCategoryByName(anyString())).thenReturn(categoryDto);
 
-        mockMvc.perform(get("/api/v1/categories/Fruits").contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(CategoryController.BASE_CATEGORY_URL + "Fruits").contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name", equalTo(NAME)));
     }
@@ -69,7 +69,7 @@ public class CategoryControllerTest {
 
         when(categoryService.getAllCategories()).thenReturn(list);
 
-        mockMvc.perform(get("/api/v1/categories/").contentType(MediaType.APPLICATION_JSON))
+        mockMvc.perform(get(CategoryController.BASE_CATEGORY_URL).contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.categories", hasSize(2)));
     }

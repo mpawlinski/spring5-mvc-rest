@@ -8,8 +8,10 @@ import pawlinski.spring5mvcrest.api.v1.model.CustomerListDTO;
 import pawlinski.spring5mvcrest.services.CustomerService;
 
 @RestController
-@RequestMapping("/api/v1/customers/")
+@RequestMapping(CustomerController.BASE_CUSTOMER_URL)
 public class CustomerController {
+
+    public static final String BASE_CUSTOMER_URL = "/api/v1/customers";
 
     private final CustomerService customerService;
 
@@ -23,12 +25,12 @@ public class CustomerController {
         return new ResponseEntity<>(new CustomerListDTO(customerService.getAllCustomers()), HttpStatus.OK);
     }
 
-    @GetMapping("lastName/{lastName}")
+    @GetMapping("/lastName/{lastName}")
     public ResponseEntity<CustomerDTO> getCustomerByLastName(@PathVariable String lastName) {
         return new ResponseEntity<>(customerService.getCustomerByLastName(lastName), HttpStatus.OK);
     }
 
-    @GetMapping("{id}")
+    @GetMapping("/{id}")
     public ResponseEntity<CustomerDTO> getCustomerById(@PathVariable Long id) {
 
         return new ResponseEntity<>(customerService.getCustomerById(id), HttpStatus.OK);
@@ -40,19 +42,19 @@ public class CustomerController {
         return new ResponseEntity<>(customerService.createNewCustomer(customerDTO), HttpStatus.CREATED);
     }
 
-    @PutMapping("{id}")
+    @PutMapping("/{id}")
     public ResponseEntity<CustomerDTO> updateCustomer(@PathVariable Long id, @RequestBody CustomerDTO customerDTO) {
 
         return new ResponseEntity<>(customerService.updateExistingCustomer(id, customerDTO), HttpStatus.OK);
     }
 
-    @PatchMapping("{id}")
+    @PatchMapping("/{id}")
     public ResponseEntity<CustomerDTO> patchCustomer(@PathVariable Long id, @RequestBody CustomerDTO customerDTO) {
 
         return new ResponseEntity<>(customerService.patchCustomer(id, customerDTO), HttpStatus.OK);
     }
 
-    @DeleteMapping("{id}")
+    @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteCustomer(@PathVariable Long id) {
         customerService.deleteCustomerById(id);
 

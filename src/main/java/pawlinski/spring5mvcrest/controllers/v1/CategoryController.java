@@ -11,8 +11,10 @@ import pawlinski.spring5mvcrest.api.v1.model.CategoryListDTO;
 import pawlinski.spring5mvcrest.services.CategoryService;
 
 @RestController
-@RequestMapping("/api/v1/categories/")
+@RequestMapping(CategoryController.BASE_CATEGORY_URL)
 public class CategoryController {
+
+    public static final String BASE_CATEGORY_URL = "/api/v1/categories/";
 
     private final CategoryService categoryService;
 
