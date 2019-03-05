@@ -17,7 +17,7 @@ import java.util.List;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.hasSize;
 import static org.mockito.ArgumentMatchers.*;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -119,4 +119,31 @@ public class CustomerControllerTest extends AbstractRestController {
                 .andExpect(jsonPath("$.customerUrl", equalTo("/api/v1/customer/2")));
     }
 
+    @Test
+    public void patchCustomer() throws Exception {
+        CustomerDTO customerDTO = new CustomerDTO();
+        customerDTO.setFirstName("Robert");
+
+        CustomerDTO returnedDto = new CustomerDTO();
+        returnedDto.setFirstName(customerDTO.getFirstName());
+        returnedDto.setLastName("Plant");
+        returnedDto.setCustomerUrl("/api/v1/customer/2");
+
+        when(customerService.patchCustomer(anyLong(), any(CustomerDTO.class))).thenReturn(returnedDto);
+
+        mockMvc.perform(patch("/api/v1/customers/2").contentType(MediaType.APPLICATION_JSON).content(asJsonString(returnedDto)))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.firstName", equalTo("Robert")))
+                .andExpect(jsonPath("$.lastName", equalTo("Plant")))
+                .andExpect(jsonPath("$.customerUrl", equalTo("/api/v1/customer/2")));
+    }
+
+    @Test
+    public void deleteCustomer() throws Exception {
+
+        mockMvc.perform(delete("/api/v1/customers/1").contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+
+        verify(customerService, times(1)).deleteCustomerById(anyLong());
+    }
 }
