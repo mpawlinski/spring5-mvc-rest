@@ -6,6 +6,7 @@ import pawlinski.spring5mvcrest.api.v1.mapper.CustomerMapper;
 import pawlinski.spring5mvcrest.api.v1.model.CustomerDTO;
 import pawlinski.spring5mvcrest.controllers.v1.CustomerController;
 import pawlinski.spring5mvcrest.domain.Customer;
+import pawlinski.spring5mvcrest.exceptions.ResourceNotFoundException;
 import pawlinski.spring5mvcrest.repositories.CustomerRepository;
 
 import java.util.List;
@@ -54,7 +55,7 @@ public class CustomerServiceImpl implements CustomerService{
                     customerDTO.setCustomerUrl(getCustomerUrl(customer.getId()));
                     return customerDTO;
                 })
-                .orElseThrow(RuntimeException::new); //todo implement better error handling
+                .orElseThrow(ResourceNotFoundException::new);
     }
 
     @Override
@@ -108,7 +109,7 @@ public class CustomerServiceImpl implements CustomerService{
 
                     return returnedDto;
 
-                }).orElseThrow(RuntimeException::new); //todo implement better error handling
+                }).orElseThrow(ResourceNotFoundException::new);
     }
 
     @Override

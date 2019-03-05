@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import pawlinski.spring5mvcrest.api.v1.model.CategoryDTO;
+import pawlinski.spring5mvcrest.controllers.RestResponseEntityExceptionHandler;
 import pawlinski.spring5mvcrest.services.CategoryService;
 
 import java.util.Arrays;
@@ -37,9 +38,11 @@ public class CategoryControllerTest {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(categoryController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(categoryController)
+                .setControllerAdvice(new RestResponseEntityExceptionHandler())
+                .build();
 
-        //categoryController = new CategoryController(categoryService);
+        //categoryController = new CategoryController(categoryService); //wo @InjectMocks
     }
 
     @Test

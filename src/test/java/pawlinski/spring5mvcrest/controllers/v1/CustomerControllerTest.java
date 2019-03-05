@@ -9,6 +9,7 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import pawlinski.spring5mvcrest.api.v1.model.CustomerDTO;
+import pawlinski.spring5mvcrest.controllers.RestResponseEntityExceptionHandler;
 import pawlinski.spring5mvcrest.services.CustomerService;
 
 import java.util.Arrays;
@@ -40,7 +41,9 @@ public class CustomerControllerTest extends AbstractRestController {
     @Before
     public void setUp() throws Exception {
         MockitoAnnotations.initMocks(this);
-        mockMvc = MockMvcBuilders.standaloneSetup(customerController).build();
+        mockMvc = MockMvcBuilders.standaloneSetup(customerController)
+                .setControllerAdvice(new RestResponseEntityExceptionHandler())
+                .build();
 
         customerDTO = new CustomerDTO();
         customerDTO.setId(ID);
