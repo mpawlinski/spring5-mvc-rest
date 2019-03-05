@@ -43,19 +43,47 @@ public class CustomerServiceImpl implements CustomerService{
     @Override
     public CustomerDTO getCustomerById(Long id) {
 
+//        return customerRepository.findById(id)
+//                .map(customerMapper::customerToCustomerDto)
+//                .orElseThrow(RuntimeException::new);
+
         return customerRepository.findById(id)
-                .map(customerMapper::customerToCustomerDto)
+                .map(customer -> {
+                    CustomerDTO customerDTO = customerMapper.customerToCustomerDto(customer);
+                    customerDTO.setCustomerUrl("/api/v1/customers/" + customer.getId());
+                    return customerDTO;
+                })
                 .orElseThrow(RuntimeException::new); //todo implement better error handling
     }
 
     @Override
     public CustomerDTO createNewCustomer(CustomerDTO customerDTO) {
 
-        Customer savedCustomer = customerRepository.save(customerMapper.customerDtoToCustomer(customerDTO));
+        return saveAndReturnDto(CustomerMapper.INSTANCE.customerDtoToCustomer(customerDTO));
 
-        CustomerDTO returnCustomerDto = customerMapper.customerToCustomerDto(savedCustomer);
-        returnCustomerDto.setCustomerUrl("/api/v1/customer/" + savedCustomer.getId());
+//        Customer savedCustomer = customerRepository.save(customerMapper.customerDtoToCustomer(customerDTO));
+//
+//        CustomerDTO returnCustomerDto = customerMapper.customerToCustomerDto(savedCustomer);
+//        returnCustomerDto.setCustomerUrl("/api/v1/customer/" + savedCustomer.getId());
 
-        return returnCustomerDto;
+//        return returnCustomerDto;
     }
+
+    @Override
+    public CustomerDTO updateExistingCustomer(Long id, CustomerDTO customerDTO) {
+        Customer customer = CustomerMapper.INSTANCE.customerDtoToCustomer(customerDTO);
+        customer.setId(id);
+
+        return saveAndReturnDto(customer);
+    }
+
+    public CustomerDTO saveAndReturnDto(Customer customer) {
+        Customer savedCustomer = customerRepository.save(customer);
+
+        CustomerDTO returnedCustomerDto = CustomerMapper.INSTANCE.customerToCustomerDto(savedCustomer);
+        returnedCustomerDto.setCustomerUrl("/api/v1/customer/" + savedCustomer.getId());
+
+        return returnedCustomerDto;
+    }
+
 }
