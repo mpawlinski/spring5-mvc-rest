@@ -18,7 +18,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.*;
 
-public class CustomerServiceTest {
+public class CustomerServiceImplTest {
 
     public static final String FIRST_NAME = "John";
     public static final Long ID = 1L;
@@ -45,7 +45,6 @@ public class CustomerServiceTest {
     @Test
     public void testGetAllCustomers() {
         //given
-
         List<Customer> list = Arrays.asList(customer1, new Customer(), new Customer());
         when(customerRepository.findAll()).thenReturn(list);
 
@@ -121,6 +120,6 @@ public class CustomerServiceTest {
     public void deleteCustomerById() {
         customerRepository.deleteById(ID);
 
-        verify(customerRepository, timeout(1)).deleteById(anyLong());
+        verify(customerRepository, times(1)).deleteById(anyLong());
     }
 }

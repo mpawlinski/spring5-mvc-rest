@@ -4,24 +4,30 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.stereotype.Component;
 import pawlinski.spring5mvcrest.domain.Category;
 import pawlinski.spring5mvcrest.domain.Customer;
+import pawlinski.spring5mvcrest.domain.Vendor;
 import pawlinski.spring5mvcrest.repositories.CategoryRepository;
 import pawlinski.spring5mvcrest.repositories.CustomerRepository;
+import pawlinski.spring5mvcrest.repositories.VendorRepository;
 
 @Component
 public class Bootstrap implements CommandLineRunner { 
 
     private CategoryRepository categoryRepository;
     private CustomerRepository customerRepository;
+    private VendorRepository vendorRepository;
 
-    public Bootstrap(CategoryRepository categoryRepository, CustomerRepository customerRepository) {
+    public Bootstrap(CategoryRepository categoryRepository, CustomerRepository customerRepository,
+                     VendorRepository vendorRepository) {
         this.categoryRepository = categoryRepository;
         this.customerRepository = customerRepository;
+        this.vendorRepository = vendorRepository;
     }
 
     @Override
     public void run(String... args) throws Exception {
         loadCategories();
         loadCustomers();
+        loadVendors();
     }
 
     private void loadCategories() {
@@ -74,5 +80,23 @@ public class Bootstrap implements CommandLineRunner {
         customerRepository.save(michael);
 
         System.out.println("Customers loaded: " + customerRepository.count());
+    }
+
+    private void loadVendors() {
+
+        Vendor exotica = new Vendor();
+        exotica.setName("Exotica Fruitica");
+
+        Vendor franksVeggies = new Vendor();
+        franksVeggies.setName("Frank's Veggies");
+
+        Vendor nutties = new Vendor();
+        nutties.setName("Nutties");
+
+        vendorRepository.save(exotica);
+        vendorRepository.save(franksVeggies);
+        vendorRepository.save(nutties);
+
+        System.out.println("Vendors loaded: " + vendorRepository.count());
     }
 }
