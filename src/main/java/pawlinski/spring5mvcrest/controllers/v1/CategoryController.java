@@ -1,11 +1,14 @@
 package pawlinski.spring5mvcrest.controllers.v1;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import pawlinski.spring5mvcrest.api.v1.model.CategoryDTO;
 import pawlinski.spring5mvcrest.api.v1.model.CategoryListDTO;
 import pawlinski.spring5mvcrest.services.CategoryService;
 
+@Api(value = "Category API")
 @RestController
 @RequestMapping(CategoryController.BASE_CATEGORY_URL)
 public class CategoryController {
@@ -18,12 +21,14 @@ public class CategoryController {
         this.categoryService = categoryService;
     }
 
+    @ApiOperation(value = "Get Category by name")
     @GetMapping("{name}")
     @ResponseStatus(HttpStatus.OK)
     public CategoryDTO getCategoryByName(@PathVariable String name) {
         return categoryService.getCategoryByName(name);
     }
 
+    @ApiOperation(value = "View list of Categories")
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public CategoryListDTO getAllCategories() {
